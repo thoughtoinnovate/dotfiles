@@ -14,14 +14,18 @@ $c\
 $rust\
 $golang\
 $nodejs\
+[](fg:green bg:sky)\
 $php\
 $java\
 $kotlin\
+$scala\
 $haskell\
 $python\
-[](fg:green bg:sapphire)\
+[](fg:green bg:sky)\
+$kubernetes\
+[](fg:sky bg:rosewater)\
 $conda\
-[](fg:sapphire bg:lavender)\
+[](fg:rosewater bg:lavender)\
 $time\
 [ ](fg:lavender)\
 $cmd_duration\
@@ -29,6 +33,11 @@ $line_break\
 $character"""
 
 palette = 'catppuccin_mocha'
+
+[aws]
+disabled = false
+style = "bg:sky fg:crust"
+format = '[$profile]($style)'
 
 [os]
 disabled = false
@@ -117,7 +126,10 @@ format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
 symbol = ""
 style = "bg:green"
 format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
-
+[scala]
+symbol = ""
+style = "bg:green"
+format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
 [haskell]
 symbol = ""
 style = "bg:green"
@@ -146,7 +158,7 @@ style = "bg:lavender"
 format = '[[  $time ](fg:crust bg:lavender)]($style)'
 
 [line_break]
-disabled = true
+disabled = false 
 
 [character]
 disabled = false
@@ -276,3 +288,28 @@ surface0 = "#363a4f"
 base = "#24273a"
 mantle = "#1e2030"
 crust = "#181926"
+[kubernetes]
+symbol = ""
+style = "bg:sky fg:crust"
+format = '[$symbol$context( $namespace)]($style)'
+disabled = false
+
+[[kubernetes.contexts]]
+# AWS EKS: arn:aws:eks:region:account:cluster/name
+context_pattern = "arn:aws:eks:(?P<region>[^:]+):(?P<account>\\d+):cluster/(?P<cluster>.*)"
+context_alias = "☁️aws:$cluster($region)"
+
+[[kubernetes.contexts]]
+# GCP GKE: gke_project_zone_cluster
+context_pattern = "gke_(?P<project>[^_]+)_(?P<zone>[^_]+)_(?P<cluster>.*)"
+context_alias = "☁️gcp:$project:$cluster"
+
+[[kubernetes.contexts]]
+# Azure AKS: cluster-name or resource-group_cluster-name
+context_pattern = "(?P<resource_group>[^_]+)_(?P<cluster>.*)"
+context_alias = "☁️azure:$resource_group:$cluster"
+
+[[kubernetes.contexts]]
+# Generic fallback for other contexts
+context_pattern = "(?P<cluster>.*)"
+context_alias = "☸️$cluster"
